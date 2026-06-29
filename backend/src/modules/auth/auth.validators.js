@@ -7,7 +7,7 @@ export const registerSchema = z.object({
 
   email: z.string({ required_error: "L'email est requis." })
     .trim()
-    .email('Adresse email invalide.')
+    .email()
     .transform((v) => v.toLowerCase()),
 
   password: z.string({ required_error: 'Le mot de passe est requis.' })
@@ -19,7 +19,7 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: z.string({ required_error: "L'email est requis." })
     .trim()
-    .email('Adresse email invalide.')
+    .email()
     .transform((v) => v.toLowerCase()),
 
   password: z.string({ required_error: 'Le mot de passe est requis.' })

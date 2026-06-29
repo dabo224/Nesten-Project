@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const isValidDate = (v) => !isNaN(Date.parse(v));
+const isValidDate = (v) => !Number.isNaN(Date.parse(v));
 
 export const absenceSchema = z.object({
   medecinId: z.number({ required_error: 'Le médecin est requis.', invalid_type_error: 'medecinId doit être un entier.' })
