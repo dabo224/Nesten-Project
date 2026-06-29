@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Utilisateurs ────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  PATIENT
+}
+
+model Utilisateur {
+  id          Int          @id @default(autoincrement())
+  nom         String
+  email       String       @unique
+  password    String
+  role        Role         @default(PATIENT)
+  rendezVous  RendezVous[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@map("utilisateurs")
+}
+
+// ─── Centres médicaux ────────────────────────────────────────────────────────
+
+model Centre {
+  id        Int       @id @default(autoincrement())
+  nom       String
+  adresse   String
+  contact   String
+  medecins  Medecin[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("centres")
+}
+
+// ─── Spécialités médicales ───────────────────────────────────────────────────
+
+model Specialite {
+  id       Int       @id @default(autoincrement())
+  nom      String    @unique
+  medecins Medecin[]
+
+  @@map("specialites")
+}
+
+// ─── Médecins ────────────────────────────────────────────────────────────────
+
+model Medecin {
+  id           Int        @id @default(autoincrement())
+  nom          String
+  specialiteId Int        @map("specialite_id")
+  centreId     Int        @map("centre_id")
+  specialite   Specialite @relation(fields: [specialiteId], references: [id])
+  centre       Centre     @relation(fields: [centreId], references: [id])
+  absences     Absence[]
+  creneaux     Creneau[]
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@map("medecins")
+}
+
+// ─── Absences ─────────────────────────────────────────────────────────────────
+
+enum MotifAbsence {
+  MALADIE
+  CONGES
+  AUTRE
+}
+
+model Absence {
+  id        Int          @id @default(autoincrement())
+  medecinId Int          @map("medecin_id")
+  medecin   Medecin      @relation(fields: [medecinId], references: [id], onDelete: Cascade)
+  dateDebut DateTime     @map("date_debut") @db.Timestamptz
+  dateFin   DateTime     @map("date_fin") @db.Timestamptz
+  motif     MotifAbsence
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  @@map("absences")
+}
+
+// ─── Créneaux horaires ────────────────────────────────────────────────────────
+
+model Creneau {
+  id            Int         @id @default(autoincrement())
+  medecinId     Int         @map("medecin_id")
+  medecin       Medecin     @relation(fields: [medecinId], references: [id], onDelete: Cascade)
+  dateHeure     DateTime    @map("date_heure") @db.Timestamptz
+  dureeMinutes  Int         @default(30) @map("duree_minutes")
+  estDisponible Boolean     @default(true) @map("est_disponible")
+  rendezVous    RendezVous?
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("creneaux")
+}
+
+// ─── Rendez-vous ─────────────────────────────────────────────────────────────
+
+enum StatutRdv {
+  CONFIRME
+  ANNULE
+}
+
+model RendezVous {
+  id             Int          @id @default(autoincrement())
+  creneauId      Int          @unique @map("creneau_id")
+  creneau        Creneau      @relation(fields: [creneauId], references: [id])
+  utilisateurId  Int?         @map("utilisateur_id")
+  utilisateur    Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: SetNull)
+  patientNom     String       @map("patient_nom")
+  patientContact String       @map("patient_contact")
+  statut         StatutRdv    @default(CONFIRME)
+  createdAt      DateTime     @default(now()) @map("created_at")
+
+  @@map("rendez_vous")
+}

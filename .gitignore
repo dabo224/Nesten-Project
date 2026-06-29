@@ -1,0 +1,54 @@
+# ─── Dossier de référence design (non versionné) ────────────────────────────
+Hôpital website by coding team/
+
+# ─── Dépendances ─────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── Variables d'environnement ───────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ─── Build outputs ───────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.angular/
+
+# ─── Prisma ──────────────────────────────────────────────────────────────────
+backend/prisma/migrations/**/migration_lock.toml
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+
+# ─── Coverage / Tests ────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+jest.config.*.js.bak
+
+# ─── IDE & OS ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Cache ────────────────────────────────────────────────────────────────────
+.cache/
+.eslintcache
+.parcel-cache/
+*.tsbuildinfo
