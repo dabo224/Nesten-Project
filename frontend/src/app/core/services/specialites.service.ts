@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Specialite } from '../models/specialite.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SpecialitesService {
-  private readonly API = 'http://localhost:3000/api/specialites';
+  private readonly API = `${environment.apiUrl}/specialites`;
   private readonly http = inject(HttpClient);
 
   getAll() {

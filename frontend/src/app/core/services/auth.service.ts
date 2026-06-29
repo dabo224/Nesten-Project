@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { User, ApiAuthResponse } from '../models/user.model';
+import { environment } from '../../../environments/environment';
 
 /**
  * AuthService — gère la session utilisateur (token JWT + utilisateur courant).
@@ -12,7 +13,7 @@ import { User, ApiAuthResponse } from '../models/user.model';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:3000/api/auth';
+  private readonly API = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'nesten_token';
 
   // Signal Angular 22 — réactif, utilisable directement dans les templates

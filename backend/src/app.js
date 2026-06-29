@@ -21,8 +21,8 @@ app.disable('x-powered-by');
 // ─── Middleware globaux ───────────────────────────────────────────────────────
 app.use(cors({
   origin: [
-    'http://localhost:4200',
-    'http://localhost:3000',
+    process.env.FRONTEND_URL,
+    `http://localhost:${process.env.PORT ?? 3000}`,
   ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

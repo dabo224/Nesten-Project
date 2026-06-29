@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Creneau } from '../models/creneau.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CreneauxService {
-  private readonly API = 'http://localhost:3000/api/creneaux';
+  private readonly API = `${environment.apiUrl}/creneaux`;
   private readonly http = inject(HttpClient);
 
   getAll(filters: { medecinId?: number; date?: string; estDisponible?: boolean } = {}) {

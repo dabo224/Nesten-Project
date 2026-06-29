@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Centre } from '../models/centre.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CentresService {
-  private readonly API = 'http://localhost:3000/api/centres';
+  private readonly API = `${environment.apiUrl}/centres`;
   private readonly http = inject(HttpClient);
 
   getAll() {
