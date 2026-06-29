@@ -123,8 +123,8 @@ features/
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/votre-compte/nesten.git
-cd nesten
+git clone https://github.com/dabo224/Nesten-Project.git
+cd Nesten-Project
 ```
 
 ### 2. Installer les dépendances
@@ -328,10 +328,60 @@ Après avoir exécuté le seed, les comptes suivants sont disponibles. Tous part
 
 ## Modèle de données
 
-```
-Utilisateur ──< RendezVous >── Creneau ──> Medecin ──> Specialite
-                                                  └──> Centre
-                               Medecin ──< Absence
+```mermaid
+erDiagram
+    UTILISATEUR {
+        int id PK
+        string nom
+        string email
+        string password
+        enum role
+    }
+    MEDECIN {
+        int id PK
+        string nom
+        int specialiteId FK
+        int centreId FK
+    }
+    CENTRE {
+        int id PK
+        string nom
+        string adresse
+        string contact
+    }
+    SPECIALITE {
+        int id PK
+        string nom
+    }
+    CRENEAU {
+        int id PK
+        int medecinId FK
+        datetime dateHeure
+        int dureeMinutes
+        bool estDisponible
+    }
+    RENDEZ_VOUS {
+        int id PK
+        int creneauId FK
+        int utilisateurId FK
+        string patientNom
+        string patientContact
+        enum statut
+    }
+    ABSENCE {
+        int id PK
+        int medecinId FK
+        date dateDebut
+        date dateFin
+        enum motif
+    }
+
+    UTILISATEUR ||--o{ RENDEZ_VOUS : "prend"
+    CRENEAU     ||--o| RENDEZ_VOUS : "est réservé par"
+    MEDECIN     ||--o{ CRENEAU     : "propose"
+    MEDECIN     ||--o{ ABSENCE     : "a"
+    MEDECIN     }o--|| SPECIALITE  : "appartient à"
+    MEDECIN     }o--|| CENTRE      : "exerce dans"
 ```
 
 | Énumération | Valeurs |
@@ -348,4 +398,4 @@ Utilisateur ──< RendezVous >── Creneau ──> Medecin ──> Specialit
 
 ---
 
-*Projet réalisé dans le cadre d'une formation en développement web full-stack.*
+*Projet réalisé dans le cadre d'un test en développement web full-stack.*
