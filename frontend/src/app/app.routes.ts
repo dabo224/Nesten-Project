@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { authGuard }  from './core/guards/auth.guard';
-import { adminGuard } from './core/guards/admin.guard';
+import { authGuard }    from './core/guards/auth.guard';
+import { adminGuard }   from './core/guards/admin.guard';
+import { patientGuard } from './core/guards/patient.guard';
 
 export const routes: Routes = [
   // Redirection racine
@@ -13,10 +14,10 @@ export const routes: Routes = [
       import('./features/auth/auth.component').then((m) => m.AuthComponent),
   },
 
-  // Espace patient (connecté)
+  // Espace patient (connecté, non-admin)
   {
     path: 'creneaux',
-    canActivate: [authGuard],
+    canActivate: [authGuard, patientGuard],
     loadComponent: () =>
       import('./features/creneaux/creneaux-list/creneaux-list.component').then(
         (m) => m.CreneauxListComponent
@@ -24,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'creneaux/:id',
-    canActivate: [authGuard],
+    canActivate: [authGuard, patientGuard],
     loadComponent: () =>
       import('./features/creneaux/creneau-detail/creneau-detail.component').then(
         (m) => m.CreneauDetailComponent
@@ -32,7 +33,7 @@ export const routes: Routes = [
   },
   {
     path: 'mes-rendezvous',
-    canActivate: [authGuard],
+    canActivate: [authGuard, patientGuard],
     loadComponent: () =>
       import('./features/rendezvous/mes-rendezvous/mes-rendezvous.component').then(
         (m) => m.MesRendezVousComponent

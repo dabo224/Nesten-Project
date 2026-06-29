@@ -11,6 +11,8 @@
 import { Router } from 'express';
 import * as creneauxController from './creneaux.controller.js';
 import { authenticate, authorize } from '../../common/middleware/auth.js';
+import { validate } from '../../common/middleware/validate.js';
+import { creneauSchema, creneauUpdateSchema } from './creneaux.validators.js';
 
 const router = Router();
 
@@ -19,8 +21,8 @@ router.get('/',       creneauxController.getAll);
 router.get('/:id',    creneauxController.getById);
 
 // Écriture — ADMIN uniquement
-router.post('/',      authenticate, authorize('ADMIN'), creneauxController.create);
-router.put('/:id',    authenticate, authorize('ADMIN'), creneauxController.update);
-router.delete('/:id', authenticate, authorize('ADMIN'), creneauxController.remove);
+router.post('/',      authenticate, authorize('ADMIN'), validate(creneauSchema),       creneauxController.create);
+router.put('/:id',    authenticate, authorize('ADMIN'), validate(creneauUpdateSchema), creneauxController.update);
+router.delete('/:id', authenticate, authorize('ADMIN'),                                creneauxController.remove);
 
 export default router;

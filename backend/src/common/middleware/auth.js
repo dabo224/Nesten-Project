@@ -10,7 +10,7 @@ import asyncWrapper from '../utils/asyncWrapper.js';
 export const authenticate = asyncWrapper((req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader?.startsWith('Bearer ')) {
     throw new AppError('Token manquant ou invalide.', 401);
   }
 

@@ -5,7 +5,7 @@ import { Specialite } from '../models/specialite.model';
 @Injectable({ providedIn: 'root' })
 export class SpecialitesService {
   private readonly API = 'http://localhost:3000/api/specialites';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll() {
     return this.http.get<{ success: boolean; data: Specialite[] }>(this.API);

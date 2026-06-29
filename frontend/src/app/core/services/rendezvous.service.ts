@@ -5,7 +5,7 @@ import { RendezVous } from '../models/rendezvous.model';
 @Injectable({ providedIn: 'root' })
 export class RendezVousService {
   private readonly API = 'http://localhost:3000/api/rendezvous';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll(filters: { statut?: string } = {}) {
     let params = new HttpParams();

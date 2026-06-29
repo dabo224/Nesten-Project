@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavbarComponent }   from '../../../shared/navbar/navbar.component';
@@ -18,9 +18,7 @@ import { Medecin }  from '../../../core/models/medecin.model';
           <h2 class="heading" style="text-align:left;padding-bottom:0">
             Gestion des <span>créneaux</span>
           </h2>
-          <button class="btn btn-primary" (click)="openForm()">
-            <i class="fas fa-plus"></i> Nouveau créneau
-          </button>
+          <button class="btn btn-primary" (click)="openForm()">+ Nouveau créneau</button>
         </div>
 
         @if (successMsg()) { <div class="alert alert-success">{{ successMsg() }}</div> }
@@ -50,8 +48,7 @@ import { Medecin }  from '../../../core/models/medecin.model';
               </div>
               <div style="display:flex;gap:1rem">
                 <button type="submit" class="btn btn-primary" [disabled]="saving()">
-                  @if (saving()) { <i class="fas fa-spinner fa-spin"></i> }
-                  Créer
+                  {{ saving() ? '...' : 'Créer' }}
                 </button>
                 <button type="button" class="btn btn-outline" (click)="closeForm()">Annuler</button>
               </div>
@@ -82,9 +79,7 @@ import { Medecin }  from '../../../core/models/medecin.model';
                     </td>
                     <td>
                       <button class="btn btn-danger btn-sm" (click)="remove(c.id)"
-                              [disabled]="!c.estDisponible">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                              [disabled]="!c.estDisponible">Supprimer</button>
                     </td>
                   </tr>
                 }
@@ -97,8 +92,8 @@ import { Medecin }  from '../../../core/models/medecin.model';
   `,
 })
 export class CreneauxAdminComponent implements OnInit {
-  private service         = inject(CreneauxService);
-  private medecinsService = inject(MedecinsService);
+  private readonly service         = inject(CreneauxService);
+  private readonly medecinsService = inject(MedecinsService);
 
   creneaux   = signal<Creneau[]>([]);
   medecins   = signal<Medecin[]>([]);

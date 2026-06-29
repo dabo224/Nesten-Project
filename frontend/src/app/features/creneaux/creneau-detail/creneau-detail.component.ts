@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -30,13 +30,10 @@ import { Creneau }             from '../../../core/models/creneau.model';
                     {{ creneau()!.medecin?.nom }}
                   </h3>
                   <p style="font-size:1.5rem;color:var(--green);margin:.4rem 0">
-                    <i class="fas fa-stethoscope"></i> {{ creneau()!.medecin?.specialite?.nom }}
+                    {{ creneau()!.medecin?.specialite?.nom }}
                   </p>
-                  <p style="font-size:1.4rem;color:var(--light)">
-                    <i class="fas fa-hospital"></i> {{ creneau()!.medecin?.centre?.nom }}
-                  </p>
+                  <p style="font-size:1.4rem;color:var(--light)">{{ creneau()!.medecin?.centre?.nom }}</p>
                   <p style="font-size:1.4rem;color:var(--light);margin-top:.5rem">
-                    <i class="fas fa-clock"></i>
                     {{ creneau()!.dateHeure | date:'EEEE dd MMMM yyyy à HH:mm':'':'fr' }}
                     — {{ creneau()!.dureeMinutes }} min
                   </p>
@@ -53,10 +50,7 @@ import { Creneau }             from '../../../core/models/creneau.model';
             <!-- Formulaire de réservation -->
             @if (creneau()!.estDisponible) {
               <div class="card">
-                <h3 style="font-size:2rem;margin-bottom:2rem;color:var(--black)">
-                  <i class="fas fa-calendar-check" style="color:var(--green)"></i>
-                  Confirmer la réservation
-                </h3>
+                <h3 style="font-size:2rem;margin-bottom:2rem;color:var(--black)">Confirmer la réservation</h3>
 
                 @if (successMsg()) {
                   <div class="alert alert-success">{{ successMsg() }}</div>
@@ -78,8 +72,7 @@ import { Creneau }             from '../../../core/models/creneau.model';
                   </div>
                   <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
                     <button type="submit" class="btn btn-primary" [disabled]="booking()">
-                      @if (booking()) { <i class="fas fa-spinner fa-spin"></i> }
-                      Confirmer le rendez-vous
+                      {{ booking() ? '...' : 'Confirmer le rendez-vous' }}
                     </button>
                     <button type="button" class="btn btn-outline" (click)="router.navigate(['/creneaux'])">
                       Annuler
@@ -97,10 +90,10 @@ import { Creneau }             from '../../../core/models/creneau.model';
   `,
 })
 export class CreneauDetailComponent implements OnInit {
-  private route            = inject(ActivatedRoute);
-  private creneauxService  = inject(CreneauxService);
-  private rdvService       = inject(RendezVousService);
-  router                   = inject(Router);
+  private readonly route            = inject(ActivatedRoute);
+  private readonly creneauxService  = inject(CreneauxService);
+  private readonly rdvService       = inject(RendezVousService);
+  readonly router          = inject(Router);
 
   creneau    = signal<Creneau | null>(null);
   loading    = signal(true);

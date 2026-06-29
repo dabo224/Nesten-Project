@@ -5,7 +5,7 @@ import { Creneau } from '../models/creneau.model';
 @Injectable({ providedIn: 'root' })
 export class CreneauxService {
   private readonly API = 'http://localhost:3000/api/creneaux';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll(filters: { medecinId?: number; date?: string; estDisponible?: boolean } = {}) {
     let params = new HttpParams();

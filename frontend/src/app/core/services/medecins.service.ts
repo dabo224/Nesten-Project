@@ -5,7 +5,7 @@ import { Medecin } from '../models/medecin.model';
 @Injectable({ providedIn: 'root' })
 export class MedecinsService {
   private readonly API = 'http://localhost:3000/api/medecins';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll(filters: { specialiteId?: number; centreId?: number } = {}) {
     let params = new HttpParams();

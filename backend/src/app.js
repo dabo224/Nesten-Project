@@ -15,8 +15,19 @@ import rendezvousRoutes  from './modules/rendezvous/rendezvous.routes.js';
 
 const app = express();
 
+// Masque l'en-tête X-Powered-By pour ne pas divulguer la version d'Express
+app.disable('x-powered-by');
+
 // ─── Middleware globaux ───────────────────────────────────────────────────────
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'http://localhost:3000',
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

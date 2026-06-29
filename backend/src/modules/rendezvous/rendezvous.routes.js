@@ -12,6 +12,8 @@
 import { Router } from 'express';
 import * as rendezvousController from './rendezvous.controller.js';
 import { authenticate, authorize } from '../../common/middleware/auth.js';
+import { validate } from '../../common/middleware/validate.js';
+import { rendezvousSchema } from './rendezvous.validators.js';
 
 const router = Router();
 
@@ -25,7 +27,7 @@ router.get('/mine',  authenticate, rendezvousController.getMyRdvs);
 router.get('/:id',   authenticate, rendezvousController.getById);
 
 // Réservation — tout utilisateur authentifié (PATIENT ou ADMIN)
-router.post('/',   authenticate, rendezvousController.book);
+router.post('/',   authenticate, validate(rendezvousSchema), rendezvousController.book);
 
 // Annulation — tout utilisateur authentifié
 router.patch('/:id/annuler', authenticate, rendezvousController.cancel);

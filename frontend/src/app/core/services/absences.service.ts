@@ -5,7 +5,7 @@ import { Absence, MotifAbsence } from '../models/absence.model';
 @Injectable({ providedIn: 'root' })
 export class AbsencesService {
   private readonly API = 'http://localhost:3000/api/absences';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll(medecinId?: number) {
     let params = new HttpParams();

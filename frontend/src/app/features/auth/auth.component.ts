@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+﻿import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -10,9 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
     <div class="auth-wrapper">
       <div class="auth-box">
 
-        <div class="logo-auth">
-          <i class="fas fa-heartbeat"></i> MedCare.
-        </div>
+        <div class="logo-auth">MedCare.</div>
 
         <!-- Onglets Login / Inscription -->
         <div class="auth-tabs">
@@ -40,7 +38,7 @@ import { AuthService } from '../../core/services/auth.service';
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%"
                     [disabled]="loading()">
-              @if (loading()) { <i class="fas fa-spinner fa-spin"></i> }
+              @if (loading()) { ... }
               Se connecter
             </button>
           </form>
@@ -66,7 +64,7 @@ import { AuthService } from '../../core/services/auth.service';
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%"
                     [disabled]="loading()">
-              @if (loading()) { <i class="fas fa-spinner fa-spin"></i> }
+              @if (loading()) { ... }
               Créer mon compte
             </button>
           </form>
@@ -77,8 +75,8 @@ import { AuthService } from '../../core/services/auth.service';
   `,
 })
 export class AuthComponent {
-  private authService = inject(AuthService);
-  private router      = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router      = inject(Router);
 
   mode    = signal<'login' | 'register'>('login');
   loading = signal(false);
@@ -91,7 +89,10 @@ export class AuthComponent {
     this.loading.set(true);
     this.errorMsg.set('');
     this.authService.login(this.loginData).subscribe({
-      next: () => this.router.navigate(['/creneaux']),
+      next: () => {
+        const role = this.authService.currentUser()?.role;
+        this.router.navigate(role === 'ADMIN' ? ['/admin'] : ['/creneaux']);
+      },
       error: (err) => {
         this.errorMsg.set(err.error?.message ?? 'Identifiants incorrects.');
         this.loading.set(false);

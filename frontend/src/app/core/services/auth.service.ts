@@ -16,19 +16,43 @@ export class AuthService {
   private readonly TOKEN_KEY = 'nesten_token';
 
   // Signal Angular 22 — réactif, utilisable directement dans les templates
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   currentUser = signal<User | null>(null);
 
   constructor() {
-    if (this.getToken()) {
+    const token = this.getToken();
+    if (token) {
+      // Restauration synchrone depuis le payload JWT : les guards peuvent lire
+      // le rôle immédiatement sans attendre la réponse HTTP.
+      const partial = this._decodeJwt(token);
+      if (partial) this.currentUser.set(partial as User);
+
+      // Vérification côté serveur + récupération du profil complet (nom, etc.)
       this.http
         .get<{ success: boolean; data: User }>(`${this.API}/me`)
         .subscribe({
-          next: (res) => this.currentUser.set(res.data),
-          error: () => this.logout(),
+          next:  (res) => this.currentUser.set(res.data),
+          error: (err) => {
+            if (err.status === 401 || err.status === 403) {
+              localStorage.removeItem(this.TOKEN_KEY);
+              this.currentUser.set(null);
+              this.router.navigate(['/auth']);
+            }
+          },
         });
+    }
+  }
+
+  /** Décode le payload JWT (sans vérification de signature — côté serveur seulement). */
+  private _decodeJwt(token: string): Pick<User, 'id' | 'email' | 'role'> | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (!payload?.role) return null;
+      return { id: payload.id, email: payload.email ?? '', role: payload.role, nom: '' } as User;
+    } catch {
+      return null;
     }
   }
 

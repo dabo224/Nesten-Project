@@ -5,7 +5,7 @@ import { Centre } from '../models/centre.model';
 @Injectable({ providedIn: 'root' })
 export class CentresService {
   private readonly API = 'http://localhost:3000/api/centres';
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getAll() {
     return this.http.get<{ success: boolean; data: Centre[] }>(this.API);

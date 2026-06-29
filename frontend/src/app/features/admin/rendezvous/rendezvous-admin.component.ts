@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { NavbarComponent }   from '../../../shared/navbar/navbar.component';
 import { RendezVousService } from '../../../core/services/rendezvous.service';
@@ -53,8 +53,7 @@ import { RendezVous }        from '../../../core/models/rendezvous.model';
                       @if (rdv.statut === 'CONFIRME') {
                         <button class="btn btn-danger btn-sm" (click)="cancel(rdv)"
                                 [disabled]="cancellingId() === rdv.id">
-                          @if (cancellingId() === rdv.id) { <i class="fas fa-spinner fa-spin"></i> }
-                          Annuler
+                          {{ cancellingId() === rdv.id ? '...' : 'Annuler' }}
                         </button>
                       }
                     </td>
@@ -69,7 +68,7 @@ import { RendezVous }        from '../../../core/models/rendezvous.model';
   `,
 })
 export class RendezVousAdminComponent implements OnInit {
-  private service = inject(RendezVousService);
+  private readonly service = inject(RendezVousService);
 
   rendezvous   = signal<RendezVous[]>([]);
   loading      = signal(true);

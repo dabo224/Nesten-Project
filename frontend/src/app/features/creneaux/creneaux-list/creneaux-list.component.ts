@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, UpperCasePipe } from '@angular/common';
 import { NavbarComponent }    from '../../../shared/navbar/navbar.component';
@@ -36,7 +36,7 @@ import { Creneau }    from '../../../core/models/creneau.model';
             <div class="step" [class.active]="step() === s.num" [class.done]="step() > s.num">
               <div class="step-circle">
                 @if (step() > s.num) {
-                  <i class="fas fa-check"></i>
+                  ✓
                 } @else {
                   {{ s.num }}
                 }
@@ -52,16 +52,15 @@ import { Creneau }    from '../../../core/models/creneau.model';
         <!-- ── Étape 1 : Centres ──────────────────────────────────────────── -->
         @if (step() === 1) {
           <div class="step-content">
-            <h3 class="step-title"><i class="fas fa-hospital"></i> Choisissez un centre médical</h3>
+            <h3 class="step-title">Choisissez un centre médical</h3>
             @if (loading()) { <div class="spinner"></div> }
             <div class="cards-grid">
               @for (c of centres(); track c.id) {
                 <div class="choice-card" role="button" tabindex="0"
                      (click)="selectCentre(c)" (keydown.enter)="selectCentre(c)">
-                  <div class="choice-icon"><i class="fas fa-hospital-alt"></i></div>
                   <h4>{{ c.nom }}</h4>
-                  <p><i class="fas fa-map-marker-alt"></i> {{ c.adresse }}</p>
-                  <p><i class="fas fa-phone"></i> {{ c.contact }}</p>
+                  <p>{{ c.adresse }}</p>
+                  <p>{{ c.contact }}</p>
                   <div class="choice-badge">{{ c._count?.medecins ?? 0 }} médecin(s)</div>
                 </div>
               }
@@ -74,16 +73,15 @@ import { Creneau }    from '../../../core/models/creneau.model';
           <div class="step-content">
             <div class="step-back" role="button" tabindex="0"
                  (click)="goBack()" (keydown.enter)="goBack()">
-              <i class="fas fa-arrow-left"></i> {{ selectedCentre()?.nom }}
+              ← {{ selectedCentre()?.nom }}
             </div>
-            <h3 class="step-title"><i class="fas fa-stethoscope"></i> Choisissez une spécialité</h3>
+            <h3 class="step-title">Choisissez une spécialité</h3>
             @if (loading()) { <div class="spinner"></div> }
             <div class="cards-grid">
               @for (s of specialites(); track s.id) {
                 <div class="choice-card" role="button" tabindex="0"
                      (click)="selectSpecialite(s)" (keydown.enter)="selectSpecialite(s)">
-                  <div class="choice-icon"><i class="fas fa-heartbeat"></i></div>
-                  <h4>{{ s.nom }}</h4>
+                    <h4>{{ s.nom }}</h4>
                 </div>
               }
             </div>
@@ -95,9 +93,9 @@ import { Creneau }    from '../../../core/models/creneau.model';
           <div class="step-content">
             <div class="step-back" role="button" tabindex="0"
                  (click)="goBack()" (keydown.enter)="goBack()">
-              <i class="fas fa-arrow-left"></i> {{ selectedSpecialite()?.nom }}
+              ← {{ selectedSpecialite()?.nom }}
             </div>
-            <h3 class="step-title"><i class="fas fa-user-md"></i> Choisissez un médecin</h3>
+            <h3 class="step-title">Choisissez un médecin</h3>
             @if (loading()) { <div class="spinner"></div> }
             <div class="cards-grid">
               @for (m of medecins(); track m.id) {
@@ -106,7 +104,7 @@ import { Creneau }    from '../../../core/models/creneau.model';
                   <img src="doc-1.jpg" alt="{{ m.nom }}" class="doc-avatar" />
                   <h4>{{ m.nom }}</h4>
                   <p class="doc-spec">{{ m.specialite?.nom }}</p>
-                  <p><i class="fas fa-hospital"></i> {{ m.centre?.nom }}</p>
+                  <p>{{ m.centre?.nom }}</p>
                 </div>
               }
             </div>
@@ -118,13 +116,12 @@ import { Creneau }    from '../../../core/models/creneau.model';
           <div class="step-content">
             <div class="step-back" role="button" tabindex="0"
                  (click)="goBack()" (keydown.enter)="goBack()">
-              <i class="fas fa-arrow-left"></i> {{ selectedMedecin()?.nom }}
+              ← {{ selectedMedecin()?.nom }}
             </div>
-            <h3 class="step-title"><i class="fas fa-calendar-alt"></i> Choisissez un créneau</h3>
+            <h3 class="step-title">Choisissez un créneau</h3>
             @if (loading()) { <div class="spinner"></div> }
             @if (!loading() && creneaux().length === 0) {
               <div class="empty-state">
-                <i class="fas fa-calendar-times"></i>
                 <p>Aucun créneau disponible pour ce médecin.</p>
                 <button class="btn btn-outline" (click)="goBack()">Choisir un autre médecin</button>
               </div>
@@ -138,10 +135,7 @@ import { Creneau }    from '../../../core/models/creneau.model';
                     <span class="slot-num">{{ c.dateHeure | date:'dd' }}</span>
                     <span class="slot-month">{{ c.dateHeure | date:'MMM' }}</span>
                   </div>
-                  <div class="slot-time">
-                    <i class="fas fa-clock"></i>
-                    {{ c.dateHeure | date:'HH:mm' }}
-                  </div>
+                  <div class="slot-time">{{ c.dateHeure | date:'HH:mm' }}</div>
                   <div class="slot-dur">{{ c.dureeMinutes }} min</div>
                 </div>
               }
@@ -154,40 +148,26 @@ import { Creneau }    from '../../../core/models/creneau.model';
           <div class="step-content" style="max-width:56rem;margin:0 auto">
             <div class="step-back" role="button" tabindex="0"
                  (click)="goBack()" (keydown.enter)="goBack()">
-              <i class="fas fa-arrow-left"></i> Choisir un autre créneau
+              ← Choisir un autre créneau
             </div>
-            <h3 class="step-title"><i class="fas fa-calendar-check"></i> Confirmer le rendez-vous</h3>
+            <h3 class="step-title">Confirmer le rendez-vous</h3>
 
             <!-- Récap -->
             <div class="recap-card">
+              <div class="recap-row"><span>{{ selectedCentre()?.nom }}</span></div>
+              <div class="recap-row"><span>{{ selectedSpecialite()?.nom }}</span></div>
+              <div class="recap-row"><span>{{ selectedMedecin()?.nom }}</span></div>
               <div class="recap-row">
-                <i class="fas fa-hospital-alt"></i>
-                <span>{{ selectedCentre()?.nom }}</span>
-              </div>
-              <div class="recap-row">
-                <i class="fas fa-stethoscope"></i>
-                <span>{{ selectedSpecialite()?.nom }}</span>
-              </div>
-              <div class="recap-row">
-                <i class="fas fa-user-md"></i>
-                <span>{{ selectedMedecin()?.nom }}</span>
-              </div>
-              <div class="recap-row">
-                <i class="fas fa-calendar"></i>
                 <span>{{ selectedCreneau()?.dateHeure | date:'EEEE dd MMMM yyyy à HH:mm' }}
                   ({{ selectedCreneau()?.dureeMinutes }} min)</span>
               </div>
             </div>
 
             @if (successMsg()) {
-              <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i> {{ successMsg() }}
-              </div>
+              <div class="alert alert-success">{{ successMsg() }}</div>
             }
             @if (errorMsg()) {
-              <div class="alert alert-error">
-                <i class="fas fa-exclamation-circle"></i> {{ errorMsg() }}
-              </div>
+              <div class="alert alert-error">{{ errorMsg() }}</div>
             }
 
             <form (ngSubmit)="confirm()" style="margin-top:2rem">
@@ -202,9 +182,7 @@ import { Creneau }    from '../../../core/models/creneau.model';
                        placeholder="Ex : 77 000 00 00 ou email@mail.com" required />
               </div>
               <button type="submit" class="btn btn-primary btn-block" [disabled]="booking()">
-                @if (booking()) { <i class="fas fa-spinner fa-spin"></i> }
-                @else { <i class="fas fa-check"></i> }
-                Confirmer le rendez-vous
+                {{ booking() ? '...' : 'Confirmer le rendez-vous' }}
               </button>
             </form>
           </div>
@@ -213,17 +191,14 @@ import { Creneau }    from '../../../core/models/creneau.model';
         <!-- ── Étape 6 : Succès ──────────────────────────────────────────── -->
         @if (step() === 6) {
           <div class="step-content success-screen">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="success-icon">✓</div>
             <h3>Rendez-vous confirmé !</h3>
             <div class="recap-card" style="margin:2rem auto;max-width:50rem">
-              <div class="recap-row"><i class="fas fa-user-md"></i><span>{{ selectedMedecin()?.nom }}</span></div>
-              <div class="recap-row"><i class="fas fa-calendar"></i>
-                <span>{{ selectedCreneau()?.dateHeure | date:'EEEE dd MMMM yyyy à HH:mm' }}</span></div>
-              <div class="recap-row"><i class="fas fa-hospital-alt"></i><span>{{ selectedCentre()?.nom }}</span></div>
+              <div class="recap-row"><span>{{ selectedMedecin()?.nom }}</span></div>
+              <div class="recap-row"><span>{{ selectedCreneau()?.dateHeure | date:'EEEE dd MMMM yyyy à HH:mm' }}</span></div>
+              <div class="recap-row"><span>{{ selectedCentre()?.nom }}</span></div>
             </div>
-            <button class="btn btn-outline" (click)="restart()">
-              <i class="fas fa-plus"></i> Prendre un autre rendez-vous
-            </button>
+            <button class="btn btn-outline" (click)="restart()">+ Prendre un autre rendez-vous</button>
           </div>
         }
 
@@ -416,10 +391,10 @@ import { Creneau }    from '../../../core/models/creneau.model';
   `],
 })
 export class CreneauxListComponent implements OnInit {
-  private centresService    = inject(CentresService);
-  private medecinsService   = inject(MedecinsService);
-  private creneauxService   = inject(CreneauxService);
-  private rdvService        = inject(RendezVousService);
+  private readonly centresService    = inject(CentresService);
+  private readonly medecinsService   = inject(MedecinsService);
+  private readonly creneauxService   = inject(CreneauxService);
+  private readonly rdvService        = inject(RendezVousService);
 
   steps = [
     { num: 1, label: 'Centre' },
@@ -530,8 +505,7 @@ export class CreneauxListComponent implements OnInit {
   }
 
   goBack() {
-    const prev = this.step() - 1;
-    this.step.set(prev < 1 ? 1 : prev);
+    this.step.set(Math.max(1, this.step() - 1));
   }
 
   restart() {

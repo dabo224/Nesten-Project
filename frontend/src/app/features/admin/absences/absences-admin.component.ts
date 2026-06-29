@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavbarComponent }   from '../../../shared/navbar/navbar.component';
@@ -18,9 +18,7 @@ import { Medecin }           from '../../../core/models/medecin.model';
           <h2 class="heading" style="text-align:left;padding-bottom:0">
             Gestion des <span>absences</span>
           </h2>
-          <button class="btn btn-primary" (click)="openForm()">
-            <i class="fas fa-plus"></i> Déclarer une absence
-          </button>
+          <button class="btn btn-primary" (click)="openForm()">+ Déclarer une absence</button>
         </div>
 
         @if (successMsg()) { <div class="alert alert-success">{{ successMsg() }}</div> }
@@ -57,8 +55,7 @@ import { Medecin }           from '../../../core/models/medecin.model';
               </div>
               <div style="display:flex;gap:1rem">
                 <button type="submit" class="btn btn-primary" [disabled]="saving()">
-                  @if (saving()) { <i class="fas fa-spinner fa-spin"></i> }
-                  Enregistrer
+                  {{ saving() ? '...' : 'Enregistrer' }}
                 </button>
                 <button type="button" class="btn btn-outline" (click)="closeForm()">Annuler</button>
               </div>
@@ -82,9 +79,7 @@ import { Medecin }           from '../../../core/models/medecin.model';
                     <td>{{ a.dateFin   | date:'dd/MM/yyyy HH:mm' }}</td>
                     <td><span class="badge badge-info">{{ a.motif }}</span></td>
                     <td>
-                      <button class="btn btn-danger btn-sm" (click)="remove(a.id)">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <button class="btn btn-danger btn-sm" (click)="remove(a.id)">Supprimer</button>
                     </td>
                   </tr>
                 }
@@ -97,8 +92,8 @@ import { Medecin }           from '../../../core/models/medecin.model';
   `,
 })
 export class AbsencesAdminComponent implements OnInit {
-  private service        = inject(AbsencesService);
-  private medecinsService = inject(MedecinsService);
+  private readonly service        = inject(AbsencesService);
+  private readonly medecinsService = inject(MedecinsService);
 
   absences   = signal<Absence[]>([]);
   medecins   = signal<Medecin[]>([]);

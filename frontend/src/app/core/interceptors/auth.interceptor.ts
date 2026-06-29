@@ -11,7 +11,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = inject(AuthService).getToken();
 
   // Vérifie que le token a bien le format JWT (3 segments séparés par des points)
-  const isValidJwt = token && token.split('.').length === 3;
+  const isValidJwt = token?.split('.').length === 3;
 
   if (isValidJwt) {
     req = req.clone({

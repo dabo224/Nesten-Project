@@ -8,7 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
   template: `
     <header class="header">
       <a routerLink="/creneaux" class="logo">
-        <i class="fas fa-heartbeat"></i> MedCare.
+        MedCare.
       </a>
 
       <nav class="navbar">
@@ -25,12 +25,8 @@ import { AuthService } from '../../core/services/auth.service';
           <a routerLink="/mes-rendezvous"   routerLinkActive="active">Mes RDV</a>
         }
 
-        <span class="user-info">
-          <i class="fas fa-user-circle"></i> {{ auth.currentUser()?.nom }}
-        </span>
-        <button class="btn-logout" (click)="auth.logout()" title="Se déconnecter">
-          <i class="fas fa-sign-out-alt"></i>
-        </button>
+        <span class="user-info">{{ auth.currentUser()?.nom }}</span>
+        <button class="btn-logout" (click)="auth.logout()">Déconnexion</button>
       </nav>
     </header>
   `,

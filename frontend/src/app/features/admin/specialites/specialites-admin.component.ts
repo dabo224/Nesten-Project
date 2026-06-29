@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+﻿import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent }      from '../../../shared/navbar/navbar.component';
 import { SpecialitesService }   from '../../../core/services/specialites.service';
@@ -15,9 +15,7 @@ import { Specialite }           from '../../../core/models/specialite.model';
           <h2 class="heading" style="text-align:left;padding-bottom:0">
             Gestion des <span>spécialités</span>
           </h2>
-          <button class="btn btn-primary" (click)="openForm()">
-            <i class="fas fa-plus"></i> Nouvelle spécialité
-          </button>
+          <button class="btn btn-primary" (click)="openForm()">+ Nouvelle spécialité</button>
         </div>
 
         @if (successMsg()) { <div class="alert alert-success">{{ successMsg() }}</div> }
@@ -36,8 +34,7 @@ import { Specialite }           from '../../../core/models/specialite.model';
               </div>
               <div style="display:flex;gap:1rem">
                 <button type="submit" class="btn btn-primary" [disabled]="saving()">
-                  @if (saving()) { <i class="fas fa-spinner fa-spin"></i> }
-                  {{ editing() ? 'Enregistrer' : 'Créer' }}
+                  {{ saving() ? '...' : (editing() ? 'Enregistrer' : 'Créer') }}
                 </button>
                 <button type="button" class="btn btn-outline" (click)="closeForm()">Annuler</button>
               </div>
@@ -58,12 +55,8 @@ import { Specialite }           from '../../../core/models/specialite.model';
                     <td>{{ s.id }}</td>
                     <td>{{ s.nom }}</td>
                     <td>
-                      <button class="btn btn-outline btn-sm" (click)="openForm(s)" style="margin-right:.5rem">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-danger btn-sm" (click)="remove(s.id)">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <button class="btn btn-outline btn-sm" (click)="openForm(s)" style="margin-right:.5rem">Modifier</button>
+                      <button class="btn btn-danger btn-sm" (click)="remove(s.id)">Supprimer</button>
                     </td>
                   </tr>
                 }
@@ -76,7 +69,7 @@ import { Specialite }           from '../../../core/models/specialite.model';
   `,
 })
 export class SpecialitesAdminComponent implements OnInit {
-  private service = inject(SpecialitesService);
+  private readonly service = inject(SpecialitesService);
 
   specialites = signal<Specialite[]>([]);
   loading     = signal(true);

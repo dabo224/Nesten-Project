@@ -11,6 +11,8 @@
 import { Router } from 'express';
 import * as absencesController from './absences.controller.js';
 import { authenticate, authorize } from '../../common/middleware/auth.js';
+import { validate } from '../../common/middleware/validate.js';
+import { absenceSchema, absenceUpdateSchema } from './absences.validators.js';
 
 const router = Router();
 
@@ -19,8 +21,8 @@ router.get('/',       absencesController.getAll);
 router.get('/:id',    absencesController.getById);
 
 // Écriture — ADMIN uniquement
-router.post('/',      authenticate, authorize('ADMIN'), absencesController.create);
-router.put('/:id',    authenticate, authorize('ADMIN'), absencesController.update);
-router.delete('/:id', authenticate, authorize('ADMIN'), absencesController.remove);
+router.post('/',      authenticate, authorize('ADMIN'), validate(absenceSchema),       absencesController.create);
+router.put('/:id',    authenticate, authorize('ADMIN'), validate(absenceUpdateSchema), absencesController.update);
+router.delete('/:id', authenticate, authorize('ADMIN'),                                absencesController.remove);
 
 export default router;
