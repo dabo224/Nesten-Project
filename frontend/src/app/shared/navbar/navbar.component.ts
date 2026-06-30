@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -7,22 +7,31 @@ import { AuthService } from '../../core/services/auth.service';
   imports: [RouterLink, RouterLinkActive],
   template: `
     <header class="header">
-      <a routerLink="/creneaux" class="logo">
-        MedCare.
-      </a>
+      <a routerLink="/creneaux" class="logo">MedCare.</a>
 
-      <nav class="navbar">
+      <!-- Hamburger (visible uniquement sur mobile) -->
+      <button class="menu-toggle" [class.open]="menuOpen()" (click)="menuOpen.set(!menuOpen())"
+              aria-label="Menu" aria-expanded="{{ menuOpen() }}">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Overlay de fermeture -->
+      @if (menuOpen()) {
+        <div class="menu-overlay" (click)="close()"></div>
+      }
+
+      <nav class="navbar" [class.open]="menuOpen()">
         @if (auth.isAdmin()) {
-          <a routerLink="/admin"            routerLinkActive="active">Dashboard</a>
-          <a routerLink="/admin/centres"    routerLinkActive="active">Centres</a>
-          <a routerLink="/admin/specialites" routerLinkActive="active">Spécialités</a>
-          <a routerLink="/admin/medecins"   routerLinkActive="active">Médecins</a>
-          <a routerLink="/admin/absences"   routerLinkActive="active">Absences</a>
-          <a routerLink="/admin/creneaux"   routerLinkActive="active">Créneaux</a>
-          <a routerLink="/admin/rendezvous" routerLinkActive="active">Rendez-vous</a>
+          <a routerLink="/admin"             routerLinkActive="active" (click)="close()">Dashboard</a>
+          <a routerLink="/admin/centres"     routerLinkActive="active" (click)="close()">Centres</a>
+          <a routerLink="/admin/specialites" routerLinkActive="active" (click)="close()">Spécialités</a>
+          <a routerLink="/admin/medecins"    routerLinkActive="active" (click)="close()">Médecins</a>
+          <a routerLink="/admin/absences"    routerLinkActive="active" (click)="close()">Absences</a>
+          <a routerLink="/admin/creneaux"    routerLinkActive="active" (click)="close()">Créneaux</a>
+          <a routerLink="/admin/rendezvous"  routerLinkActive="active" (click)="close()">Rendez-vous</a>
         } @else {
-          <a routerLink="/creneaux"         routerLinkActive="active">Créneaux</a>
-          <a routerLink="/mes-rendezvous"   routerLinkActive="active">Mes RDV</a>
+          <a routerLink="/creneaux"        routerLinkActive="active" (click)="close()">Créneaux</a>
+          <a routerLink="/mes-rendezvous"  routerLinkActive="active" (click)="close()">Mes RDV</a>
         }
 
         <span class="user-info">{{ auth.currentUser()?.nom }}</span>
@@ -37,9 +46,21 @@ import { AuthService } from '../../core/services/auth.service';
       margin-left: 2rem;
       font-weight: 500;
     }
-    .user-info i { margin-right: .4rem; }
+
+    @media (max-width: 768px) {
+      .user-info {
+        margin-left: 0;
+        padding: 1.2rem 0;
+        border-bottom: .1rem solid #eee;
+        width: 100%;
+        display: block;
+      }
+    }
   `],
 })
 export class NavbarComponent {
-  auth = inject(AuthService);
+  auth     = inject(AuthService);
+  menuOpen = signal(false);
+
+  close() { this.menuOpen.set(false); }
 }
